@@ -1,3 +1,4 @@
+use core::panic;
 use reqwest;
 use std::env;
 
@@ -5,8 +6,16 @@ use std::env;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Hello, world!");
 
-    let amad_api = env::var("AMAD_API_KEY").unwrap();
-    let amad_secret = env::var("AMAD_SECRET").unwrap();
+    // Getting env variables to obtain AMAD access token
+    let amad_api = env::var("AMAD_API_KEY").unwrap_or_else(|error| {
+        panic!("AMAD API Key not found in environment variables: {}", error)
+    });
+    let amad_secret = env::var("AMAD_API_SECRET").unwrap_or_else(|error| {
+        panic!(
+            "AMAD API Secret not found in environment variables: {}",
+            error
+        )
+    });
 
     let client = reqwest::Client::new();
     let res = client
