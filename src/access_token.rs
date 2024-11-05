@@ -37,6 +37,10 @@ pub async fn get_access_token() -> Result<String, Box<dyn std::error::Error>> {
         .send()
         .await?;
 
+    if !res.status().is_success() {
+        return Err("Failed to get access token: server returned error status".into());
+    }
+
     let body = res.text().await?;
     let token: AccessToken = serde_json::from_str(&body)?;
 
