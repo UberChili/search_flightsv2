@@ -27,7 +27,7 @@ pub async fn get_access_token() -> Result<String, Box<dyn std::error::Error>> {
     });
 
     let client = reqwest::Client::new();
-    let res = client
+    let response = client
         .post(URL)
         .header("Content-Type", "application/x-www-form-urlencoded")
         .body(format!(
@@ -37,11 +37,11 @@ pub async fn get_access_token() -> Result<String, Box<dyn std::error::Error>> {
         .send()
         .await?;
 
-    if !res.status().is_success() {
+    if !response.status().is_success() {
         return Err("Failed to get access token: server returned error status".into());
     }
 
-    let body = res.text().await?;
+    let body = response.text().await?;
     let token: AccessToken = serde_json::from_str(&body)?;
 
     Ok(token.access_token)
