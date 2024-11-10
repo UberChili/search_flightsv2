@@ -13,8 +13,6 @@ struct AccessToken {
 static URL: &str = "https://test.api.amadeus.com/v1/security/oauth2/token";
 
 pub async fn get_access_token() -> Result<String, Box<dyn std::error::Error>> {
-    println!("Getting Access Token:");
-
     // Getting env variables to obtain AMAD access token
     let amad_api = env::var("AMAD_API_KEY").unwrap_or_else(|error| {
         panic!("AMAD API Key not found in environment variables: {}", error)
